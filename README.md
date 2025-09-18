@@ -1,1 +1,590 @@
-# HollowBet
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HollowBet - Sua Plataforma de Apostas Divertidas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fdbb2d;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .saldo {
+            background-color: #1a2a6c;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 20px;
+            background-color: #fdbb2d;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background-color: #ffcc44;
+            transform: translateY(-2px);
+        }
+        
+        .page {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #fdbb2d;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        button {
+            padding: 12px 20px;
+            background-color: #1a2a6c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2a3a9c;
+        }
+        
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .game-option {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .game-option:hover {
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .game-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #fdbb2d;
+        }
+        
+        .aposta-btn {
+            margin-top: 15px;
+            background-color: #b21f1f;
+        }
+        
+        .aposta-btn:hover {
+            background-color: #d22f2f;
+        }
+        
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .ganhou {
+            background-color: #2a9c2a;
+            display: block;
+        }
+        
+        .perdeu {
+            background-color: #b21f1f;
+            display: block;
+        }
+        
+        .historico {
+            margin-top: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        th {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">BetsInusitadas</div>
+            <div class="user-info">
+                <div class="saldo">Saldo: R$ <span id="user-saldo">100,00</span></div>
+                <button id="logout-btn" class="nav-btn">Sair</button>
+            </div>
+        </header>
+        
+        <nav>
+            <button class="nav-btn" data-page="jogo">Jogar</button>
+            <button class="nav-btn" data-page="deposito">Depósito</button>
+            <button class="nav-btn" data-page="saque">Saque</button>
+            <button class="nav-btn" data-page="historico">Histórico</button>
+        </nav>
+        
+        <!-- Página de Login -->
+        <div id="login-page" class="page active">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="login-email">E-mail:</label>
+                <input type="email" id="login-email" placeholder="Seu e-mail">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Senha:</label>
+                <input type="password" id="login-password" placeholder="Sua senha">
+            </div>
+            <button id="login-btn">Entrar</button>
+            <p style="margin-top: 20px; text-align: center;">
+                Não tem uma conta? <a href="#" id="go-to-register" style="color: #fdbb2d;">Registre-se aqui</a>
+            </p>
+        </div>
+        
+        <!-- Página de Registro -->
+        <div id="register-page" class="page">
+            <h2>Registro</h2>
+            <div class="form-group">
+                <label for="register-name">Nome completo:</label>
+                <input type="text" id="register-name" placeholder="Seu nome completo">
+            </div>
+            <div class="form-group">
+                <label for="register-email">E-mail:</label>
+                <input type="email" id="register-email" placeholder="Seu e-mail">
+            </div>
+            <div class="form-group">
+                <label for="register-password">Senha:</label>
+                <input type="password" id="register-password" placeholder="Crie uma senha">
+            </div>
+            <div class="form-group">
+                <label for="register-confirm">Confirmar senha:</label>
+                <input type="password" id="register-confirm" placeholder="Confirme sua senha">
+            </div>
+            <button id="register-btn">Criar conta</button>
+            <p style="margin-top: 20px; text-align: center;">
+                Já tem uma conta? <a href="#" id="go-to-login" style="color: #fdbb2d;">Faça login aqui</a>
+            </p>
+        </div>
+        
+        <!-- Página do Jogo -->
+        <div id="jogo-page" class="page">
+            <h2>Faça suas Apostas Inusitadas!</h2>
+            
+            <div class="game-container">
+                <div class="game-option">
+                    <div class="game-title">Qual será o próximo som?</div>
+                    <p>Ouça o som e adivinhe de qual animal é!</p>
+                    <div class="form-group">
+                        <label for="aposta1">Valor da aposta:</label>
+                        <input type="number" id="aposta1" min="5" value="10">
+                    </div>
+                    <button class="aposta-btn" data-game="1">Apostar R$ 10</button>
+                </div>
+                
+                <div class="game-option">
+                    <div class="game-title">Adivinhe o sabor</div>
+                    <p>Experimente e adivinhe o sabor da bala!</p>
+                    <div class="form-group">
+                        <label for="aposta2">Valor da aposta:</label>
+                        <input type="number" id="aposta2" min="5" value="10">
+                    </div>
+                    <button class="aposta-btn" data-game="2">Apostar R$ 10</button>
+                </div>
+                
+                <div class="game-option">
+                    <div class="game-title">Quantos grãos?</div>
+                    <p>Aposte em quantos grãos de café tem no pote!</p>
+                    <div class="form-group">
+                        <label for="aposta3">Valor da aposta:</label>
+                        <input type="number" id="aposta3" min="5" value="10">
+                    </div>
+                    <button class="aposta-btn" data-game="3">Apostar R$ 10</button>
+                </div>
+            </div>
+            
+            <div id="resultado" class="resultado"></div>
+        </div>
+        
+        <!-- Página de Depósito -->
+        <div id="deposito-page" class="page">
+            <h2>Fazer Depósito</h2>
+            <div class="form-group">
+                <label for="deposito-valor">Valor do depósito:</label>
+                <input type="number" id="deposito-valor" min="10" placeholder="Valor em R$">
+            </div>
+            <div class="form-group">
+                <label for="deposito-metodo">Método de pagamento:</label>
+                <select id="deposito-metodo" style="width: 100%; padding: 12px; border-radius: 5px;">
+                    <option value="cartao">Cartão de Crédito</option>
+                    <option value="pix">PIX</option>
+                    <option value="boleto">Boleto Bancário</option>
+                </select>
+            </div>
+            <button id="deposito-btn">Realizar Depósito</button>
+        </div>
+        
+        <!-- Página de Saque -->
+        <div id="saque-page" class="page">
+            <h2>Fazer Saque</h2>
+            <div class="form-group">
+                <label for="saque-valor">Valor do saque:</label>
+                <input type="number" id="saque-valor" min="10" placeholder="Valor em R$">
+            </div>
+            <div class="form-group">
+                <label for="saque-metodo">Método de saque:</label>
+                <select id="saque-metodo" style="width: 100%; padding: 12px; border-radius: 5px;">
+                    <option value="pix">PIX</option>
+                    <option value="ted">TED/DOC</option>
+                    <option value="boleto">Boleto Bancário</option>
+                </select>
+            </div>
+            <button id="saque-btn">Solicitar Saque</button>
+        </div>
+        
+        <!-- Página de Histórico -->
+        <div id="historico-page" class="page">
+            <h2>Histórico de Apostas</h2>
+            <div class="historico">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Jogo</th>
+                            <th>Valor</th>
+                            <th>Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historico-body">
+                        <!-- Histórico será preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis globais
+        let saldo = 100;
+        let usuarioLogado = false;
+        let historicoApostas = [];
+        
+        // Elementos da DOM
+        const pages = document.querySelectorAll('.page');
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const saldoElement = document.getElementById('user-saldo');
+        const resultadoElement = document.getElementById('resultado');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const goToRegister = document.getElementById('go-to-register');
+        const goToLogin = document.getElementById('go-to-login');
+        const logoutBtn = document.getElementById('logout-btn');
+        const depositoBtn = document.getElementById('deposito-btn');
+        const saqueBtn = document.getElementById('saque-btn');
+        const apostaBtns = document.querySelectorAll('.aposta-btn');
+        
+        // Navegação entre páginas
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (!usuarioLogado && button.dataset.page !== 'login') {
+                    showPage('login-page');
+                    alert('Por favor, faça login primeiro!');
+                    return;
+                }
+                
+                const pageId = button.dataset.page + '-page';
+                showPage(pageId);
+            });
+        });
+        
+        // Links entre login e registro
+        goToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('register-page');
+        });
+        
+        goToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('login-page');
+        });
+        
+        // Função para mostrar página específica
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        // Login
+        loginBtn.addEventListener('click', () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (email && password) {
+                usuarioLogado = true;
+                showPage('jogo-page');
+                updateSaldo();
+            } else {
+                alert('Por favor, preencha todos os campos!');
+            }
+        });
+        
+        // Registro
+        registerBtn.addEventListener('click', () => {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            
+            if (name && email && password && confirm) {
+                if (password !== confirm) {
+                    alert('As senhas não coincidem!');
+                    return;
+                }
+                
+                usuarioLogado = true;
+                showPage('jogo-page');
+                updateSaldo();
+            } else {
+                alert('Por favor, preencha todos os campos!');
+            }
+        });
+        
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            usuarioLogado = false;
+            showPage('login-page');
+        });
+        
+        // Depósito
+        depositoBtn.addEventListener('click', () => {
+            const valor = parseFloat(document.getElementById('deposito-valor').value);
+            
+            if (valor && valor >= 10) {
+                saldo += valor;
+                updateSaldo();
+                alert(`Depósito de R$ ${valor.toFixed(2)} realizado com sucesso!`);
+                document.getElementById('deposito-valor').value = '';
+            } else {
+                alert('O valor mínimo para depósito é R$ 10,00');
+            }
+        });
+        
+        // Saque
+        saqueBtn.addEventListener('click', () => {
+            const valor = parseFloat(document.getElementById('saque-valor').value);
+            
+            if (valor && valor >= 10) {
+                if (valor > saldo) {
+                    alert('Saldo insuficiente para realizar o saque!');
+                    return;
+                }
+                
+                saldo -= valor;
+                updateSaldo();
+                alert(`Saque de R$ ${valor.toFixed(2)} solicitado com sucesso!`);
+                document.getElementById('saque-valor').value = '';
+            } else {
+                alert('O valor mínimo para saque é R$ 10,00');
+            }
+        });
+        
+        // Apostas
+        apostaBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const gameId = btn.dataset.game;
+                const apostaInput = document.getElementById(`aposta${gameId}`);
+                const valorAposta = parseFloat(apostaInput.value);
+                
+                if (valorAposta < 5) {
+                    alert('O valor mínimo para apostar é R$ 5,00');
+                    return;
+                }
+                
+                if (valorAposta > saldo) {
+                    alert('Saldo insuficiente para realizar a aposta!');
+                    return;
+                }
+                
+                // Simular resultado da aposta (70% de chance de perder)
+                const venceu = Math.random() > 0.7;
+                
+                if (venceu) {
+                    const ganho = valorAposta * 2;
+                    saldo += ganho;
+                    resultadoElement.textContent = `Parabéns! Você ganhou R$ ${ganho.toFixed(2)}!`;
+                    resultadoElement.className = 'resultado ganhou';
+                    
+                    // Adicionar ao histórico
+                    historicoApostas.push({
+                        data: new Date().toLocaleString(),
+                        jogo: `Jogo ${gameId}`,
+                        valor: valorAposta,
+                        resultado: 'Ganhou'
+                    });
+                } else {
+                    saldo -= valorAposta;
+                    resultadoElement.textContent = `Que pena! Você perdeu R$ ${valorAposta.toFixed(2)}. Tente novamente!`;
+                    resultadoElement.className = 'resultado perdeu';
+                    
+                    // Adicionar ao histórico
+                    historicoApostas.push({
+                        data: new Date().toLocaleString(),
+                        jogo: `Jogo ${gameId}`,
+                        valor: valorAposta,
+                        resultado: 'Perdeu'
+                    });
+                }
+                
+                updateSaldo();
+                updateHistorico();
+                
+                // Esconder resultado após 5 segundos
+                setTimeout(() => {
+                    resultadoElement.className = 'resultado';
+                }, 5000);
+            });
+        });
+        
+        // Atualizar saldo na interface
+        function updateSaldo() {
+            saldoElement.textContent = saldo.toFixed(2);
+        }
+        
+        // Atualizar histórico na interface
+        function updateHistorico() {
+            const historicoBody = document.getElementById('historico-body');
+            historicoBody.innerHTML = '';
+            
+            historicoApostas.forEach(aposta => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${aposta.data}</td>
+                    <td>${aposta.jogo}</td>
+                    <td>R$ ${aposta.valor.toFixed(2)}</td>
+                    <td>${aposta.resultado}</td>
+                `;
+                
+                historicoBody.appendChild(row);
+            });
+        }
+        
+        // Inicializar a página
+        updateSaldo();
+        updateHistorico();
+    </script>
+</body>
+</html>
